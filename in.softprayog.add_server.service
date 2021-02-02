@@ -1,4 +1,6 @@
 [D-Bus Service]
 Name=in.softprayog.add_server
 Exec=/bin/server
+User=root
 AssumedAppArmorLabel=unconfined
+

@@ -14,17 +14,17 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 slots:
   dbus-server-slot:
     interface: dbus
-    bus: session
+    bus: system
     name: in.softprayog.add_server
   dbus-client-slot:
     interface: dbus
-    bus: session
+    bus: system
     name: in.softprayog.add_client
 
 plugs:
   dbus-server-plug:
     interface: dbus
-    bus: session
+    bus: system
     name: in.softprayog.add_server
 
 apps:
@@ -48,4 +48,4 @@ parts:
     organize:
         server: bin/server
         client: bin/client
-        in.softprayog.add_server.service: usr/share/dbus-1/services/in.softprayog.add_server.service
+        in.softprayog.add_server.service: usr/share/dbus-1/system-services/in.softprayog.add_server.service
