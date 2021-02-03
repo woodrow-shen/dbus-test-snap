@@ -14,28 +14,31 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 slots:
   dbus-server-slot:
     interface: dbus
-    bus: system
+    bus: session
     name: in.softprayog.add_server
   dbus-client-slot:
     interface: dbus
-    bus: system
+    bus: session
     name: in.softprayog.add_client
 
 plugs:
-  dbus-server-plug:
+  dbus-client-plug:
     interface: dbus
-    bus: system
+    bus: session
     name: in.softprayog.add_server
 
 apps:
   server:
     command: bin/server
-    slots: [dbus-server-slot]
-
+    daemon: simple
+    passthrough:
+      daemon-scope: user
+      activates-on:
+        - dbus-server-slot
   client:
     command: bin/client
-    slots: [dbus-client-slot]
-    plugs: [dbus-server-plug]
+    plugs:
+      - dbus-client-plug
 
 parts:
   dbus-server-client:
@@ -44,8 +47,6 @@ parts:
     override-build: |
         make clean;make
         cp server client ${SNAPCRAFT_PART_INSTALL}
-        cp in.softprayog.add_server.service ${SNAPCRAFT_PART_INSTALL}
     organize:
         server: bin/server
         client: bin/client
-        in.softprayog.add_server.service: usr/share/dbus-1/system-services/in.softprayog.add_server.service
